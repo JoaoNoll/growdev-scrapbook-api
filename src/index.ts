@@ -86,24 +86,31 @@ try {
         return response.json({error});
     };
      
-   
 });
 
-app.delete('/anotacoes/:id', (response: Response, request: Request) => {
-    const {id} = request.params;
-    const indexAnotacao = anotacoes.findIndex(anotacao => anotacao.id === parseInt(id));
 
-    if(indexAnotacao < 0) {
-        return response.status(404).json({
-            mensagem: 'Anotação não encontrada.'
-        });
-    };
-   
-    anotacoes.splice(indexAnotacao, 1);
+app.delete('/anotacoes/:id', ( request: Request, response: Response ) => {
+    try {
+        const { id } = request.params;
     
-    return response.sendStatus(204);
-   
-});
+        const indexAnotacao = anotacoes.findIndex(anotacao => anotacao.id === parseInt(id));   
+
+        if(indexAnotacao < 0) {
+            return response.status(404).json({
+                mensagem: 'Anotação não encontrada.'
+            });
+        };
+
+        anotacoes.splice(indexAnotacao, 1);
+
+        return response.sendStatus(204);
+    
+        } catch (error) {
+            return response.json({error});
+        };
+         
+    });
+    
 const port = process.env.PORT || 8080;
 
 app.listen(port, () => {
